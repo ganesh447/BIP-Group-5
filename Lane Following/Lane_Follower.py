@@ -7,10 +7,15 @@ from jetbot import Robot, Camera, bgr8_to_jpeg
 import ipywidgets.widgets as widgets
 from IPython.display import display
 
-# --- 1. CONFIGURATION ---
-model_path = 'best_steering_models.pth'
-speed_gain = 0.15
-steering_gain = 0.04
+# --- 1. CONFIGURATION (Updated) ---
+model_path = 'fainl_model.pth'
+speed_gain = 0.15     # Base speed
+steering_gain = 0.12   # INCREASED: Higher value = sharper turns (was 0.04)
+steering_kd = 0.04     # NEW: Prevents overshooting/wobbling
+steering_bias = 0.0    # Adjust (e.g., 0.01) if robot naturally veers one way
+
+# Global variable to track previous error for the "D" in PID
+last_x = 0.0
 
 # --- 2. MODEL SETUP ---
 device = torch.device('cuda')
@@ -43,25 +48,35 @@ def preprocess(image):
     image.sub_(mean[:, None, None]).div_(std[:, None, None])
     return image[None, ...]
 
-# --- 5. THE EXECUTION FUNCTION ---
+# --- 5. THE EXECUTION FUNCTION (Improved) ---
 def execute(change):
+    global last_x
     image = change['new']
     
     # Run Inference
     with torch.no_grad():
         output = model(preprocess(image)).flatten()
     
+    # Current horizontal error (-1.0 to 1.0)
     x = float(output[0])
     
-    # Motor Control Logic
-    steering = x * steering_gain
+    # --- PD CONTROL LOGIC ---
+    # Proportional (current error) + Derivative (change in error)
+    change_in_x = x - last_x
+    steering = (x * steering_gain) + (change_in_x * steering_kd)
+    last_x = x # Save for next frame
+    
+    # Apply bias and calculate motors
+    steering += steering_bias
+    
     left_v = max(min(speed_gain + steering, 1.0), 0.0)
     right_v = max(min(speed_gain - steering, 1.0), 0.0)
+    
     robot.set_motors(left_v, right_v)
     
-    # Visualization
+    # Visualization (Draws a line showing steering direction)
     px = int(112 + x * 112)
-    cv2.circle(image, (px, 112), 8, (0, 255, 0), -1)
+    cv2.line(image, (112, 224), (px, 112), (0, 255, 0), 3)
     image_widget.value = bgr8_to_jpeg(image)
 
 # --- 6. STOP BUTTON LOGIC ---

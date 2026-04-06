@@ -1,16 +1,9 @@
 <div align="center">
 
-```
-██████╗ ██╗██████╗      ██████╗ ██████╗  ██████╗ ██╗   ██╗██████╗      ███████╗
-██╔══██╗██║██╔══██╗    ██╔════╝ ██╔══██╗██╔═══██╗██║   ██║██╔══██╗     ╚════██║
-██████╔╝██║██████╔╝    ██║  ███╗██████╔╝██║   ██║██║   ██║██████╔╝         ██╔╝
-██╔══██╗██║██╔═══╝     ██║   ██║██╔══██╗██║   ██║██║   ██║██╔═══╝         ██╔╝ 
-██████╔╝██║██║         ╚██████╔╝██║  ██║╚██████╔╝╚██████╔╝██║             ██║  
-╚═════╝ ╚═╝╚═╝          ╚═════╝ ╚═╝  ╚═╝ ╚═════╝  ╚═════╝ ╚═╝            ╚═╝  
-```
+# Autonomous JetBot
 
-### **Autonomous JetBot — AI Lane Following & LiDAR Obstacle Avoidance**
-*BIP Group 5 · NVIDIA Jetson Nano · ResNet-18 · RPLIDAR A1/A2*
+### AI Lane Following & LiDAR Obstacle Avoidance
+*NVIDIA Jetson Nano · ResNet-18 · RPLIDAR A1/A2*
 
 ---
 
@@ -28,7 +21,7 @@
 
 ## Overview
 
-BIP Group 5's autonomous robot combines **deep learning visual steering** with **real-time LiDAR obstacle detection** to achieve fully autonomous navigation on a JetBot platform. A fine-tuned ResNet-18 regression network predicts the robot's path from a live camera feed, while an RPLIDAR A1/A2 sensor guards against collisions. A lightweight **Finite State Machine** fuses both signals — the robot follows lanes at 14 Hz, and seamlessly swerves around obstacles when the LiDAR detects a threat.
+The project combines **deep learning visual steering** with **real-time LiDAR obstacle detection** to achieve fully autonomous navigation on a JetBot platform. A fine-tuned ResNet-18 regression network predicts the robot's path from a live camera feed, while an RPLIDAR A1/A2 sensor guards against collisions. A lightweight **Finite State Machine** fuses both signals — the robot follows lanes at 14 Hz, and seamlessly swerves around obstacles when the LiDAR detects a threat.
 
 ---
 
@@ -317,17 +310,6 @@ The JetBot smoothly merges AI intent with reactive safety — neither overrides 
 
 ---
 
-## Team — BIP Group 5
-
-| Role | Responsibility |
-|---|---|
-| ML / Training | ResNet-18 regression, dataset collection, Training.ipynb |
-| Robotics / Control | FSM logic, Pure Pursuit, motor integration |
-| Perception | LiDAR integration, obstacle detection pipeline |
-| Integration | Lane_Follower.py full-stack assembly, demo |
-
----
-
 ## Acknowledgements
 
 - [NVIDIA JetBot](https://jetbot.org) — open-source AI robot platform
@@ -337,8 +319,3 @@ The JetBot smoothly merges AI intent with reactive safety — neither overrides 
 
 ---
 
-<div align="center">
-
-*Built with precision by BIP Group 5*
-
-</div>
